@@ -8,6 +8,7 @@ import time
 
 import azcam
 from azcam.exposures.exposure import Exposure
+
 from .receive_data import ReceiveData
 
 

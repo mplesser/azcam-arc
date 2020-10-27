@@ -2,7 +2,7 @@ import socket
 import time
 
 import numpy
-import time
+
 import azcam
 
 
