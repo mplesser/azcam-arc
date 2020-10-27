@@ -7,7 +7,7 @@ import threading
 import time
 
 import azcam
-from azcam.exposures.exposure import Exposure
+from azcam.exposure import Exposure
 
 from .receive_data import ReceiveData
 
