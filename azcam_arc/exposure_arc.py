@@ -8,7 +8,7 @@ import time
 
 import azcam
 from azcam.exposures.exposure import Exposure
-from azcam.exposures.receive_data import ReceiveData
+from .receive_data import ReceiveData
 
 
 class ExposureArc(Exposure):
