@@ -11,7 +11,7 @@ def stop_idle():
     """
 
     s = "controller.stop_idle"
-    azcam.api.rcommand(s)
+    azcam.api.serverconn.rcommand(s)
 
     return
 
@@ -22,7 +22,7 @@ def start_idle():
     """
 
     s = "controller.start_idle"
-    azcam.api.rcommand(s)
+    azcam.api.serverconn.rcommand(s)
 
     return
 
@@ -37,7 +37,7 @@ def set_bias_number(BoardNumber, DAC, Type, DacValue):
     """
 
     s = 'controller.set_bias_number %d %d "%s" %d' % (BoardNumber, DAC, Type, DacValue)
-    azcam.api.rcommand(s)
+    azcam.api.serverconn.rcommand(s)
 
     return
 
@@ -52,7 +52,7 @@ def write_controller_memory(Type, BoardNumber, Address, value):
     """
 
     s = 'controller.write_memory "%s" %d %d %d' % (Type, BoardNumber, Address, value)
-    azcam.api.rcommand(s)
+    azcam.api.serverconn.rcommand(s)
 
     return
 
@@ -66,7 +66,7 @@ def read_controller_memory(Type, BoardNumber, Address):
     """
 
     s = 'controller.read_memory "%s" %d %d' % (Type, BoardNumber, Address)
-    azcam.api.rcommand(s)
+    azcam.api.serverconn.rcommand(s)
 
     return
 
@@ -88,6 +88,6 @@ def board_command(Command, BoardNumber, Arg1=-1, Arg2=-1, Arg3=-1, Arg4=-1):
         Arg3,
         Arg4,
     )
-    azcam.api.rcommand(s)
+    azcam.api.serverconn.rcommand(s)
 
     return
