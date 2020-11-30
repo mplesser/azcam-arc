@@ -2,7 +2,7 @@
 Client-side commands for ARC controller.
 """
 
-import azcam
+from azcam import api
 
 
 def stop_idle():
@@ -11,7 +11,7 @@ def stop_idle():
     """
 
     s = "controller.stop_idle"
-    azcam.api.serverconn.rcommand(s)
+    api.server.rcommand(s)
 
     return
 
@@ -22,12 +22,12 @@ def start_idle():
     """
 
     s = "controller.start_idle"
-    azcam.api.serverconn.rcommand(s)
+    api.server.rcommand(s)
 
     return
 
 
-def set_bias_number(BoardNumber, DAC, Type, DacValue):
+def set_bias_number(board_number, dac_number, board_type, dac_value):
     """
     Sets a bias value.
     BoardNumber is the controller board number.
@@ -36,13 +36,13 @@ def set_bias_number(BoardNumber, DAC, Type, DacValue):
     DacValue is DAC value for voltage.
     """
 
-    s = 'controller.set_bias_number %d %d "%s" %d' % (BoardNumber, DAC, Type, DacValue)
-    azcam.api.serverconn.rcommand(s)
+    s = f"controller.set_bias_number {board_number} {dac_number} {board_type} {dac_value}"
+    api.server.rcommand(s)
 
     return
 
 
-def write_controller_memory(Type, BoardNumber, Address, value):
+def write_controller_memory(mem_type, board_number, address, value):
     """
     Write a word to a DSP memory location.
     Type is P, X, Y, or R memory space.
@@ -51,13 +51,13 @@ def write_controller_memory(Type, BoardNumber, Address, value):
     value is data to write.
     """
 
-    s = 'controller.write_memory "%s" %d %d %d' % (Type, BoardNumber, Address, value)
-    azcam.api.serverconn.rcommand(s)
+    s = f"controller.write_memory {mem_type} {board_number} {address} {value}"
+    api.server.rcommand(s)
 
     return
 
 
-def read_controller_memory(Type, BoardNumber, Address):
+def read_controller_memory(mem_type, board_number, address):
     """
     Read from DSP memory.
     Type is P, X, Y, or R memory space.
@@ -65,13 +65,13 @@ def read_controller_memory(Type, BoardNumber, Address):
     Address is memory address to read.
     """
 
-    s = 'controller.read_memory "%s" %d %d' % (Type, BoardNumber, Address)
-    azcam.api.serverconn.rcommand(s)
+    s = f"controller.read_memory {mem_type} {board_number} {address}"
+    reply = api.server.rcommand(s)
 
-    return
+    return int(reply)
 
 
-def board_command(Command, BoardNumber, Arg1=-1, Arg2=-1, Arg3=-1, Arg4=-1):
+def board_command(command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-1):
     """
     Send a specific command to an ARC controller board.
     The reply from the board is not usually 'OK', it is often 'DON' but could be data.
@@ -80,14 +80,7 @@ def board_command(Command, BoardNumber, Arg1=-1, Arg2=-1, Arg3=-1, Arg4=-1):
     ArgN are arguments for Cmd.
     """
 
-    s = 'controller.board_command "%s" %d %d %d %d %d' % (
-        Command,
-        BoardNumber,
-        Arg1,
-        Arg2,
-        Arg3,
-        Arg4,
-    )
-    azcam.api.serverconn.rcommand(s)
+    s = f"controller.board_command {command} {board_number} {arg1} {arg2} {arg3} {arg4}"
+    api.server.rcommand(s)
 
     return
