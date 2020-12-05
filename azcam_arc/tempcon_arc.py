@@ -133,7 +133,7 @@ class TempConArc(TempCon):
                 reply = azcam.api.controller.board_command(
                     cmd, azcam.api.controller.UTILITYBOARD, 0x400000 | Address
                 )  # Y space
-                counts = int(reply[0])
+                counts = int(reply)
                 avecount += counts
         except ValueError:
             raise azcam.AzcamError("could not read temperature")
