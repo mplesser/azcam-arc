@@ -35,11 +35,10 @@ class ReceiveData(object):
         # using this helps writing efficiency, bytes
         self.RecBufferSize = 5 * 1024 * 1024
 
-    def receive_image_data(self, dataSize):
+    def receive_image_data(self, data_size):
         """
         Receive binary image data from controller server.
-        dataSize is bytes.
-        new version: 15May2015 Zareba
+        data_size is bytes.
         """
 
         if azcam.api.controller.camserver.demo_mode:
@@ -53,19 +52,19 @@ class ReceiveData(object):
             (azcam.api.controller.camserver.host, azcam.api.controller.camserver.port)
         )
 
-        azcam.log(f"Receiving image data: {dataSize} bytes", level=3)
+        azcam.log(f"Receiving image data: {data_size} bytes", level=3)
 
         # Init Deinterlace
         self.numamps_image = self.exposure.image.focalplane.numamps_image
         self.numpix_amp = self.exposure.image.focalplane.numpix_amp
 
         reqCnt = min(
-            dataSize - 17, self.RecBufferSize - 17
+            data_size - 17, self.RecBufferSize - 17
         )  # 17 bytes for the data frame size (%16d + space)
         dataCnt = 0  # receved data counter
         repCnt = 0  # repeate data request counter: 100
         getData = b""
-        totalpixels = int(dataSize / 2)
+        totalpixels = int(data_size / 2)
         self.PixelsReadout = 0
         self.pixels_remaining = totalpixels
 
@@ -76,7 +75,7 @@ class ReceiveData(object):
         ptrData = 0
 
         # loop over data just read, long repeat as images could be slow to start
-        while (dataCnt < dataSize) and (repCnt < 50):
+        while (dataCnt < data_size) and (repCnt < 50):
 
             # check if aborted by user (from abort() - controller.abort()
             if azcam.api.exposure.exposure_flag == azcam.db.exposureflags["ABORT"]:
@@ -115,7 +114,7 @@ class ReceiveData(object):
                 ]
                 ptrData = ptrData + pixelsreadout
 
-                reqCnt = min(dataSize - dataCnt - 17, self.RecBufferSize - 17)
+                reqCnt = min(data_size - dataCnt - 17, self.RecBufferSize - 17)
                 self.PixelsReadout = self.PixelsReadout + pixelsreadout
                 self.pixels_remaining = self.pixels_remaining - pixelsreadout
                 # time.sleep(0.2)
@@ -124,7 +123,7 @@ class ReceiveData(object):
                 repCnt = repCnt + 1
 
         # check if all data has been received
-        if dataCnt == dataSize:
+        if dataCnt == data_size:
             self.valid = 1
             self.pixels_remaining = 0
             azcam.log("Image data received")
@@ -132,7 +131,7 @@ class ReceiveData(object):
             if not azcam.api.exposure.exposure_flag == azcam.db.exposureflags["ABORT"]:
                 s = "ERROR in ReceiveImageData: Received %d of %d bytes" % (
                     dataCnt,
-                    dataSize,
+                    data_size,
                 )
                 self.socket.close()
                 raise azcam.AzcamError(s)
