@@ -471,12 +471,11 @@ class ControllerArc(Controller):
 
     # *** shutter ***
 
-    def set_shutter_state(self, Flag="close"):
+    def set_shutter_state(self, flag: bool = 0):
         """
         Sets the shutter state during an exposure.
-        Flag is:
-        open -> close shutter during exposure
-        close -> open shutter during exposure
+        Args:
+            flag: open(True) or close(False) shutter during exposure
         """
 
         # timing board X:<STATUS for gen2/3
@@ -495,10 +494,8 @@ class ControllerArc(Controller):
         # bit 11 defines shutter state for gen2/3
         # bit 0 for gen1
 
-        if Flag.lower() == "open":
+        if flag:
             flag = 1
-        elif Flag.lower() == "close" or Flag.lower() == "closed":
-            flag = 0
         else:
             flag = 0
 
