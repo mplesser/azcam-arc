@@ -81,7 +81,7 @@ def read_controller_memory(mem_type: str, board_number: int, address: int):
 def board_command(command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-1):
     """
     Send a specific command to an ARC controller board.
-    The reply from the board is not usually 'OK', it is often 'DON' but could be data.
+    The reply from the board is often 'DON' but could be data.
     Args:
         command: board command to send
         board_number: controller board number
