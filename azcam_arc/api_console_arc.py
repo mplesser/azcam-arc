@@ -2,10 +2,14 @@
 Client-side commands for ARC controller.
 """
 
+import sys
+from types import MethodType
+import inspect
+
 from azcam import api
 
 
-def stop_idle():
+def stop_idle(self):
     """
     Stop idle clocking.
     """
@@ -16,7 +20,7 @@ def stop_idle():
     return
 
 
-def start_idle():
+def start_idle(self):
     """
     Start idle clocking.
     """
@@ -28,7 +32,7 @@ def start_idle():
 
 
 def set_bias_number(
-    board_number: int, dac_number: int, board_type: str, dac_value: int
+    self, board_number: int, dac_number: int, board_type: str, dac_value: int
 ):
     """
     Sets a bias value.
@@ -45,7 +49,9 @@ def set_bias_number(
     return
 
 
-def write_controller_memory(mem_type: str, board_number: int, address: int, value: int):
+def write_controller_memory(
+    self, mem_type: str, board_number: int, address: int, value: int
+):
     """
     Write a word to a DSP memory location.
     Args:
@@ -61,7 +67,7 @@ def write_controller_memory(mem_type: str, board_number: int, address: int, valu
     return
 
 
-def read_controller_memory(mem_type: str, board_number: int, address: int):
+def read_controller_memory(self, mem_type: str, board_number: int, address: int):
     """
     Read from DSP memory.
     Args:
@@ -78,7 +84,7 @@ def read_controller_memory(mem_type: str, board_number: int, address: int):
     return int(reply)
 
 
-def board_command(command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-1):
+def board_command(self, command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-1):
     """
     Send a specific command to an ARC controller board.
     The reply from the board is often 'DON' but could be data.
@@ -86,9 +92,17 @@ def board_command(command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-1):
         command: board command to send
         board_number: controller board number
         argN: arguments for command
+    Returns:
+        reply: reply from controller
     """
 
     s = f"controller.board_command {command} {board_number} {arg1} {arg2} {arg3} {arg4}"
-    api.server.rcommand(s)
+    reply = api.server.rcommand(s)
 
-    return
+    return reply
+
+
+# add methods to api.controller
+for mod in inspect.getmembers(sys.modules[__name__]):
+    if inspect.isfunction(mod[1]):
+        setattr(api.controller, mod[0], MethodType(mod[1], api.controller))

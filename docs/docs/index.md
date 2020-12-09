@@ -55,4 +55,4 @@ Note this applies to gen3 systems only, the gen1 and gen2 situation is more comp
 Note that *xxx.lod* files are loaded for the ARC systems.
 
 ## Commands - client-side
-::: azcam_arc.arc_commands
+::: azcam_arc.api_console
