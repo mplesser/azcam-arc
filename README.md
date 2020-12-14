@@ -27,10 +27,10 @@ The code below is for example only.
     filetype = "MEF"
     exposure.filetype = azcam.db.filetypes[filetype]
     exposure.image.filetype = azcam.db.filetypes[filetype]
-    exposure.set_remote_server("localhost", 6543)
+    exposure.set_remote_imageserver("localhost", 6543)
     exposure.image.remote_imageserver_filename = "\\data\\imagewriter.fits"
     exposure.image.server_type = "azcam"
-    exposure.set_remote_server()
+    exposure.set_remote_imageserver()
 
 ## Camera Server
 *Camera servers* are separate executable programs which manage direct interaction with 
