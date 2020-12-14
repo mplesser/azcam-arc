@@ -216,13 +216,13 @@ class ExposureArc(Exposure):
 
         # if remote write, LocalFile is local temp file
         if self.image.remote_imageserver_flag:
-            LocalFile = self.temp_image_file + "." + self.get_extension(self.filetype)
+            LocalFile = self.temp_image_file + "." + self.get_extname(self.filetype)
             try:
                 os.remove(LocalFile)
             except FileNotFoundError:
                 pass
         else:
-            LocalFile = self.get_name()
+            LocalFile = self.get_filename()
 
         # wait for image data to be received
         loop = 0
@@ -271,7 +271,7 @@ class ExposureArc(Exposure):
                     sendthread.start()
 
                     # increment file sequence number now and return
-                    self.increment()
+                    self.increment_filenumber()
                     self.exposure_flag = azcam.db.exposureflags["NONE"]
                     return
 
@@ -293,7 +293,7 @@ class ExposureArc(Exposure):
 
         # increment file sequence number if image was written
         if self.save_file:
-            self.increment()
+            self.increment_filenumber()
 
         self.exposure_flag = azcam.db.exposureflags["NONE"]
 
