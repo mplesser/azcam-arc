@@ -7,6 +7,7 @@ setup(
     name="azcam-arc",
     version="20.1",
     description="azcam extension for ARC CCD controllers",
+    long_description_content_type="text/markdown",
     long_description=long_description,
     author="Michael Lesser",
     author_email="mlesser@arizona.edu",
