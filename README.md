@@ -4,7 +4,9 @@
 
 ## Installation
 
-Download from github: https://github.com/mplesser/azcam-arc.git.
+`pip install azam-arc`
+
+Or download from github: https://github.com/mplesser/azcam-arc.git.
 
 ## Example Code
 
