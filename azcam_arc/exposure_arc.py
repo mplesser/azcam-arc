@@ -221,7 +221,7 @@ class ExposureArc(Exposure):
                 pass
         else:
             LocalFile = self.get_filename()
-        self.current_filename = LocalFile
+        self.last_filename = LocalFile
 
         # wait for image data to be received
         loop = 0
