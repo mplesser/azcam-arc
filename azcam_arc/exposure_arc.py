@@ -213,7 +213,7 @@ class ExposureArc(Exposure):
         self.exposure_flag = self.exposureflags["WRITING"]
 
         # if remote write, LocalFile is local temp file
-        if self.image.remote_imageserver_flag:
+        if self.remote_imageserver_flag:
             LocalFile = self.temp_image_file + "." + self.get_extname(self.filetype)
             try:
                 os.remove(LocalFile)
@@ -254,16 +254,16 @@ class ExposureArc(Exposure):
             if self.guide_mode:
                 self.image.send_image(LocalFile)
 
-            # send image to remote DataServer
-            elif self.image.remote_imageserver_flag:
-                self.image.remote_imageserver_filename = self.get_filename()
+            # send image to remote image server
+            elif self.remote_imageserver_flag:
+                self.sendimage.remote_imageserver_filename = self.get_filename()
                 if self.write_async:
                     self.exposure_flag = self.exposureflags[
                         "NONE"
                     ]  # reset flag now so next exposure can start
-                    azcam.log("Starting asynchronous image transfer to dataserver")
+                    azcam.log("Sending image asynchronously")
                     sendthread = threading.Thread(
-                        target=self.image.send_image,
+                        target=self.sendimage.send_image,
                         name="writeasync",
                         args=("dataserver"),
                     )
@@ -275,8 +275,8 @@ class ExposureArc(Exposure):
                     return
 
                 else:
-                    self.image.send_image(LocalFile)
-                    azcam.log("Finished sending image")
+                    azcam.log("Sending image")
+                    self.sendimage.send_image(LocalFile)
 
         # image data and file are now ready
         self.image.toggle = 1
