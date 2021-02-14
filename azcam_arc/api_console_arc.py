@@ -1,5 +1,6 @@
 """
-Client-side commands for ARC controller.
+Client console commands for ARC controller.
+These methods are added to api.controller.
 """
 
 import sys
