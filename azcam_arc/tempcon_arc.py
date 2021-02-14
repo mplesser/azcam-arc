@@ -39,11 +39,11 @@ class TempConArc(TempCon):
         TEMPSET = 0x01C
 
         # ignore if no utlity board
-        if not azcam.api.controller.utility_board_installed:
+        if not azcam.db.controller.utility_board_installed:
             return
 
         # ignore if controller is not reset
-        if not azcam.api.controller.is_reset:
+        if not azcam.db.controller.is_reset:
             return
 
         if temperature is None:
@@ -54,8 +54,8 @@ class TempConArc(TempCon):
         temperature_id = int(temperature_id)
         self.control_temperature_number = temperature_id
         counts = self.convert_temp_to_counts(2, self.control_temperature)
-        azcam.api.controller.write_memory(
-            "Y", azcam.api.controller.UTILITYBOARD, TEMPSET, int(counts)
+        azcam.db.controller.write_memory(
+            "Y", azcam.db.controller.UTILITYBOARD, TEMPSET, int(counts)
         )
 
         return
@@ -68,12 +68,12 @@ class TempConArc(TempCon):
         """
 
         # return bad_temp_value if no utlity board
-        if not azcam.api.controller.utility_board_installed:
+        if not azcam.db.controller.utility_board_installed:
             return 3 * [self.bad_temp_value]
 
         # Don't read hardware while exposure is in progess, return last values read
-        flag = azcam.api.exposure.exposure_flag
-        if flag != azcam.api.exposure.exposureflags["NONE"]:
+        flag = azcam.db.exposure.exposure_flag
+        if flag != azcam.db.exposure.exposureflags["NONE"]:
             return self.last_temps
 
         camtemp = self.get_temperature(0)
@@ -104,10 +104,10 @@ class TempConArc(TempCon):
             # azcam.AzcamWarning("Tempcon not initialized")
             return -999.9
 
-        if not azcam.api.controller.utility_board_installed:
+        if not azcam.db.controller.utility_board_installed:
             return self.bad_temp_value
 
-        if not azcam.api.controller.is_reset:
+        if not azcam.db.controller.is_reset:
             return self.bad_temp_value
 
         # define DSP address
@@ -121,8 +121,8 @@ class TempConArc(TempCon):
             return "ERROR bad TemperatureID"
 
         # Don't read hardware while exposure is in progess
-        flag = azcam.api.exposure.exposure_flag
-        if flag != azcam.api.exposure.exposureflags["NONE"]:
+        flag = azcam.db.exposure.exposure_flag
+        if flag != azcam.db.exposure.exposureflags["NONE"]:
             return self.last_temps[temperature_id]
 
         # read temperature
@@ -130,8 +130,8 @@ class TempConArc(TempCon):
         avecount = 0
         try:
             for _ in range(self.num_temp_reads):
-                reply = azcam.api.controller.board_command(
-                    cmd, azcam.api.controller.UTILITYBOARD, 0x400000 | Address
+                reply = azcam.db.controller.board_command(
+                    cmd, azcam.db.controller.UTILITYBOARD, 0x400000 | Address
                 )  # Y space
                 counts = int(reply)
                 avecount += counts
@@ -140,9 +140,7 @@ class TempConArc(TempCon):
         counts = avecount / self.num_temp_reads
 
         # convert from counts to Celsius
-        temp = self.convert_counts_to_temp(
-            self.temperature_cals[temperature_id], counts
-        )
+        temp = self.convert_counts_to_temp(self.temperature_cals[temperature_id], counts)
 
         temp = self.apply_corrections(temp, temperature_id)
 
@@ -258,11 +256,7 @@ class TempConArc(TempCon):
         if calflag == 0:  # DT670 counts to Celsius
 
             # convert counts to voltage
-            voltage = (
-                ((VOLTMAX - VOLTMIN) / (COUNTMAX - COUNTMIN + 1))
-                * (counts - 2048)
-                / GAIN
-            )
+            voltage = ((VOLTMAX - VOLTMIN) / (COUNTMAX - COUNTMIN + 1)) * (counts - 2048) / GAIN
 
             if voltage > VMAX:
                 temp = -999.9
@@ -311,11 +305,7 @@ class TempConArc(TempCon):
         elif calflag == 3:  # 1N914 diode voltage to Celsius
 
             # convert counts to voltage
-            voltage = (
-                ((VOLTMAX - VOLTMIN) / (COUNTMAX - COUNTMIN + 1))
-                * (counts - 2048)
-                / GAIN
-            )
+            voltage = ((VOLTMAX - VOLTMIN) / (COUNTMAX - COUNTMIN + 1)) * (counts - 2048) / GAIN
 
             temp = (
                 NOAO[0]
@@ -350,14 +340,9 @@ class TempConArc(TempCon):
 
             inp = temperature + 273.13  # C to K
             voltage = (
-                NOAOINV[3]
-                + inp * NOAOINV[2]
-                + pow(inp, 2) * NOAOINV[1]
-                + pow(inp, 3) * NOAOINV[0]
+                NOAOINV[3] + inp * NOAOINV[2] + pow(inp, 2) * NOAOINV[1] + pow(inp, 3) * NOAOINV[0]
             )
-            counts = ((COUNTMAX - COUNTMIN + 1) / (VOLTMAX - VOLTMIN)) * (
-                voltage * GAIN
-            ) + 2048
+            counts = ((COUNTMAX - COUNTMIN + 1) / (VOLTMAX - VOLTMIN)) * (voltage * GAIN) + 2048
 
         else:
             raise azcam.AzcamError("convert_temp_to_counts invalid calflag")

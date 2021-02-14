@@ -6,7 +6,7 @@ import sys
 from types import MethodType
 import inspect
 
-from azcam import api
+import azcam
 
 
 def stop_idle(self):
@@ -15,7 +15,7 @@ def stop_idle(self):
     """
 
     s = "controller.stop_idle"
-    api.server.rcommand(s)
+    azcam.db.api.server.rcommand(s)
 
     return
 
@@ -26,14 +26,12 @@ def start_idle(self):
     """
 
     s = "controller.start_idle"
-    api.server.rcommand(s)
+    azcam.db.api.server.rcommand(s)
 
     return
 
 
-def set_bias_number(
-    self, board_number: int, dac_number: int, board_type: str, dac_value: int
-):
+def set_bias_number(self, board_number: int, dac_number: int, board_type: str, dac_value: int):
     """
     Sets a bias value.
     Args:
@@ -44,14 +42,12 @@ def set_bias_number(
     """
 
     s = f"controller.set_bias_number {board_number} {dac_number} {board_type} {dac_value}"
-    api.server.rcommand(s)
+    azcam.db.api.server.rcommand(s)
 
     return
 
 
-def write_controller_memory(
-    self, mem_type: str, board_number: int, address: int, value: int
-):
+def write_controller_memory(self, mem_type: str, board_number: int, address: int, value: int):
     """
     Write a word to a DSP memory location.
     Args:
@@ -62,7 +58,7 @@ def write_controller_memory(
     """
 
     s = f"controller.write_memory {mem_type} {board_number} {address} {value}"
-    api.server.rcommand(s)
+    azcam.db.api.server.rcommand(s)
 
     return
 
@@ -79,7 +75,7 @@ def read_controller_memory(self, mem_type: str, board_number: int, address: int)
     """
 
     s = f"controller.read_memory {mem_type} {board_number} {address}"
-    reply = api.server.rcommand(s)
+    reply = azcam.db.api.server.rcommand(s)
 
     return int(reply)
 
@@ -97,7 +93,7 @@ def board_command(self, command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-
     """
 
     s = f"controller.board_command {command} {board_number} {arg1} {arg2} {arg3} {arg4}"
-    reply = api.server.rcommand(s)
+    reply = azcam.db.api.server.rcommand(s)
 
     return reply
 
@@ -105,4 +101,4 @@ def board_command(self, command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-
 # add methods to api.controller
 for mod in inspect.getmembers(sys.modules[__name__]):
     if inspect.isfunction(mod[1]):
-        setattr(api.controller, mod[0], MethodType(mod[1], api.controller))
+        setattr(azcam.db.api.controller, mod[0], MethodType(mod[1], azcam.db.api.controller))
