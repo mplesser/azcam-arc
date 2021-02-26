@@ -15,8 +15,9 @@ def stop_idle(self):
     Stop idle clocking.
     """
 
+    server = azcam.get_tools("server")
     s = "controller.stop_idle"
-    azcam.db.api.server.rcommand(s)
+    server.rcommand(s)
 
     return
 
@@ -26,8 +27,9 @@ def start_idle(self):
     Start idle clocking.
     """
 
+    server = azcam.get_tools("server")
     s = "controller.start_idle"
-    azcam.db.api.server.rcommand(s)
+    server.rcommand(s)
 
     return
 
@@ -42,8 +44,9 @@ def set_bias_number(self, board_number: int, dac_number: int, board_type: str, d
         dac_value: DAC value for voltage
     """
 
+    server = azcam.get_tools("server")
     s = f"controller.set_bias_number {board_number} {dac_number} {board_type} {dac_value}"
-    azcam.db.api.server.rcommand(s)
+    server.rcommand(s)
 
     return
 
@@ -58,8 +61,9 @@ def write_controller_memory(self, mem_type: str, board_number: int, address: int
         value: data to write
     """
 
+    server = azcam.get_tools("server")
     s = f"controller.write_memory {mem_type} {board_number} {address} {value}"
-    azcam.db.api.server.rcommand(s)
+    server.rcommand(s)
 
     return
 
@@ -75,8 +79,9 @@ def read_controller_memory(self, mem_type: str, board_number: int, address: int)
         Value of memory
     """
 
+    server = azcam.get_tools("server")
     s = f"controller.read_memory {mem_type} {board_number} {address}"
-    reply = azcam.db.api.server.rcommand(s)
+    reply = server.rcommand(s)
 
     return int(reply)
 
@@ -93,8 +98,9 @@ def board_command(self, command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-
         reply: reply from controller
     """
 
+    server = azcam.get_tools("server")
     s = f"controller.board_command {command} {board_number} {arg1} {arg2} {arg3} {arg4}"
-    reply = azcam.db.api.server.rcommand(s)
+    reply = server.rcommand(s)
 
     return reply
 
