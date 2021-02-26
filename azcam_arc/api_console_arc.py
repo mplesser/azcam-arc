@@ -103,7 +103,7 @@ def board_command(self, command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-
 for mod in inspect.getmembers(sys.modules[__name__]):
     if inspect.isfunction(mod[1]):
         setattr(
-            azcam.get_objects("controller"),
+            azcam.get_tools("controller"),
             mod[0],
-            MethodType(mod[1], azcam.get_objects("controller")),
+            MethodType(mod[1], azcam.get_tools("controller")),
         )
