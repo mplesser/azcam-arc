@@ -1,6 +1,6 @@
 """
 Client console commands for ARC controller.
-These methods are added to api.controller.
+These methods are added to the controller tool.
 """
 
 import sys
@@ -105,7 +105,7 @@ def board_command(self, command, board_number, arg1=-1, arg2=-1, arg3=-1, arg4=-
     return reply
 
 
-# add methods to api.controller
+# add methods to the controller tool
 for mod in inspect.getmembers(sys.modules[__name__]):
     if inspect.isfunction(mod[1]):
         setattr(

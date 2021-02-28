@@ -137,9 +137,7 @@ class ControllerArc(Controller):
         elif self.utility_board in ["gen1", "gen2", "gen3"]:
             self.utility_board_installed = 1
         else:
-            raise azcam.AzcamError(
-                f"Unrecognized utility board name: {self.utility_board}"
-            )
+            raise azcam.AzcamError(f"Unrecognized utility board name: {self.utility_board}")
 
         return
 
@@ -275,12 +273,8 @@ class ControllerArc(Controller):
         """
 
         # number of total pixels in image for data transfer
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NSIMAGE, self.detpars.numcols_image
-        )
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NPIMAGE, self.detpars.numrows_image
-        )
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NSIMAGE, self.detpars.numcols_image)
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NPIMAGE, self.detpars.numrows_image)
 
         # frame transfer skip size
         self.write_memory("Y", self.TIMINGBOARD, self.Y_FRAMET, self.detpars.framet)
@@ -298,33 +292,17 @@ class ControllerArc(Controller):
         self.write_memory("Y", self.TIMINGBOARD, self.Y_NPCLEAR, self.detpars.yflush)
 
         # write skipping parameters
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NSPRESKIP, self.detpars.xpreskip
-        )
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NSUNDERSCAN, self.detpars.xunderscan
-        )
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NSPRESKIP, self.detpars.xpreskip)
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NSUNDERSCAN, self.detpars.xunderscan)
         self.write_memory("Y", self.TIMINGBOARD, self.Y_NSSKIP, self.detpars.xskip)
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NSPOSTSKIP, self.detpars.xpostskip
-        )
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NSOVERSCAN, self.detpars.xoverscan
-        )
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NSPOSTSKIP, self.detpars.xpostskip)
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NSOVERSCAN, self.detpars.xoverscan)
 
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NPPRESKIP, self.detpars.ypreskip
-        )
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NPUNDERSCAN, self.detpars.yunderscan
-        )
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NPPRESKIP, self.detpars.ypreskip)
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NPUNDERSCAN, self.detpars.yunderscan)
         self.write_memory("Y", self.TIMINGBOARD, self.Y_NPSKIP, self.detpars.yskip)
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NPPOSTSKIP, self.detpars.ypostskip
-        )
-        self.write_memory(
-            "Y", self.TIMINGBOARD, self.Y_NPOVERSCAN, self.detpars.yoverscan
-        )
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NPPOSTSKIP, self.detpars.ypostskip)
+        self.write_memory("Y", self.TIMINGBOARD, self.Y_NPOVERSCAN, self.detpars.yoverscan)
 
         return
 
@@ -451,9 +429,7 @@ class ControllerArc(Controller):
         if self.video_boards[0] == "arc48":  # assume all board types are the same
             self.board_command("SVO", self.TIMINGBOARD, BoardNumber, DAC, DacValue)
         else:
-            raise azcam.AzcamError(
-                "Command set_video_offset not supported for this video board"
-            )
+            raise azcam.AzcamError("Command set_video_offset not supported for this video board")
 
         return
 
@@ -665,20 +641,14 @@ class ControllerArc(Controller):
         """
 
         if self.video_boards[0] == "gen1":
-            raise azcam.AzcamError(
-                "Command set_bias_number not supported for this controller"
-            )
+            raise azcam.AzcamError("Command set_bias_number not supported for this controller")
         elif self.video_boards[0] in [
             "arc48",
             "arc47",
         ]:  # assume all board types are the same
-            self.board_command(
-                "SBN", self.TIMINGBOARD, BoardNumber, Type, DAC, DacValue
-            )
+            self.board_command("SBN", self.TIMINGBOARD, BoardNumber, Type, DAC, DacValue)
         else:
-            self.board_command(
-                "SBN", self.TIMINGBOARD, BoardNumber, DAC, Type, DacValue
-            )
+            self.board_command("SBN", self.TIMINGBOARD, BoardNumber, DAC, Type, DacValue)
 
         return
 
@@ -1013,8 +983,6 @@ class ControllerArc(Controller):
                 if int(reply) == value:
                     continue
                 else:
-                    raise azcam.AzcamError(
-                        f"Communication to board {board} failed on loop {loop}"
-                    )
+                    raise azcam.AzcamError(f"Communication to board {board} failed on loop {loop}")
 
         return
