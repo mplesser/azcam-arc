@@ -60,33 +60,6 @@ class TempConArc(TempCon):
 
         return
 
-    def get_temperatures(self):
-        """
-        Updates and returns current CAMTEMP, DEWTEMP, and DIODETEMP temperatures from utility board.
-        -999.9 value updated if no utility board is installed or other any error occurs.
-        Returns [Temp1,Temp2,Temp3] where Temps are temperaturess in Celsius.
-        """
-
-        # return bad_temp_value if no utlity board
-        if not azcam.db.controller.utility_board_installed:
-            return 3 * [self.bad_temp_value]
-
-        # Don't read hardware while exposure is in progess, return last values read
-        flag = azcam.db.exposure.exposure_flag
-        if flag != azcam.db.exposure.exposureflags["NONE"]:
-            return self.last_temps
-
-        camtemp = self.get_temperature(0)
-
-        dewtemp = self.get_temperature(1)
-
-        diodetemp = self.get_temperature(2)
-
-        if self.log_temps:
-            azcam.log(f"templog: {camtemp} {dewtemp} {diodetemp} -999.9", logconsole=0)
-
-        return [camtemp, dewtemp, diodetemp]
-
     def get_temperature(self, temperature_id=0):
         """
         Read a utlity board temperature.
