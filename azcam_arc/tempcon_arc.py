@@ -21,6 +21,8 @@ class TempConArc(TempCon):
         self.num_temp_reads = 5
         self.control_temperature = +25.0
 
+        self.temperature_ids = [0, 1]  # camtemp, dewtemp
+
         self.last_temps = 3 * [self.bad_temp_value]  # last readings for during exposure
 
         return
