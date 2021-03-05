@@ -15,9 +15,9 @@ class ControllerArc(Controller):
     The controller class for ARC Gen1, Gen2, and Gen3 controllers.
     """
 
-    def __init__(self, obj_id="controller", name="Controller"):
+    def __init__(self, obj_id="controller", description=None):
 
-        super().__init__(obj_id, name)
+        super().__init__(obj_id, description)
 
         self.controller_class = "arc"
 
@@ -150,7 +150,7 @@ class ControllerArc(Controller):
             return
 
         if not self.enabled:
-            azcam.AzcamWarning(f"{self.name} is not enabled")
+            azcam.AzcamWarning(f"{self.description} is not enabled")
             return
 
         self.set_boards()

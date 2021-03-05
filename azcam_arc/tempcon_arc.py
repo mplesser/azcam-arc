@@ -14,9 +14,9 @@ class TempConArc(TempCon):
     This is used for Gen1, Gen2, and Gen3 ARC controllers.
     """
 
-    def __init__(self, obj_id="tempcon", name="tempcon_arc"):
+    def __init__(self, obj_id="tempcon", description="ARC tempcon"):
 
-        super().__init__(obj_id, name)
+        super().__init__(obj_id, description)
 
         self.num_temp_reads = 5
         self.control_temperature = +25.0
@@ -35,7 +35,7 @@ class TempConArc(TempCon):
         """
 
         if not self.enabled:
-            azcam.AzcamWarning(f"{self.name} is not enabled")
+            azcam.AzcamWarning(f"{self.description} is not enabled")
             return
 
         TEMPSET = 0x01C

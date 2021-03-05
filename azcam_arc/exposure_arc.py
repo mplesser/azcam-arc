@@ -17,9 +17,9 @@ class ExposureArc(Exposure):
     Defines the exposure class for ARC controllers which makes an exposure.
     """
 
-    def __init__(self, obj_id="exposure", name="Exposure"):
+    def __init__(self, obj_id="exposure", description=None):
 
-        super().__init__(obj_id, name)
+        super().__init__(obj_id, description)
 
         self.receive_data = ReceiveData(self)
 
