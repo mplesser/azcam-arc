@@ -15,9 +15,9 @@ class ControllerArc(Controller):
     The controller class for ARC Gen1, Gen2, and Gen3 controllers.
     """
 
-    def __init__(self, obj_id="controller", description=None):
+    def __init__(self, tool_id="controller", description=None):
 
-        super().__init__(obj_id, description)
+        super().__init__(tool_id, description)
 
         self.controller_class = "arc"
 

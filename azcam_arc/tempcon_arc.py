@@ -14,9 +14,9 @@ class TempConArc(TempCon):
     This is used for Gen1, Gen2, and Gen3 ARC controllers.
     """
 
-    def __init__(self, obj_id="tempcon", description="ARC tempcon"):
+    def __init__(self, tool_id="tempcon", description=None):
 
-        super().__init__(obj_id, description)
+        super().__init__(tool_id, description)
 
         self.num_temp_reads = 5
         self.control_temperature = +25.0
