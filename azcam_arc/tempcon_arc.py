@@ -93,7 +93,9 @@ class TempConArc(TempCon):
         elif temperature_id == 2:
             Address = 12
         else:
-            return "ERROR bad TemperatureID"
+            raise azcam.AzcamError("bad temperature_id in get_temperature")
+
+        temperature_id = int(temperature_id)
 
         # Don't read hardware while exposure is in progess
         flag = azcam.db.exposure.exposure_flag
