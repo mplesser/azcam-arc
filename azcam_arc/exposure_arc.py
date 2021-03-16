@@ -123,7 +123,7 @@ class ExposureArc(Exposure):
             if self.comp_exposure:
                 if not azcam.db.instrument.shutter_strobe:
                     azcam.db.instrument.comps_off()
-                azcam.db.instrument.set_active_comps("shutter")
+                azcam.db.instrument.set_comps("shutter")
 
         # extra close shutter command
         reply = azcam.db.controller.set_shutter(0)
