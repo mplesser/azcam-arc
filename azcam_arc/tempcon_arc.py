@@ -27,6 +27,17 @@ class TempConArc(TempCon):
 
         return
 
+    def define_keywords(self):
+        """
+        Defines and resets instrument keywords.
+        """
+
+        self.set_keyword("CAMTEMP", 0.0, "Camera temperature", float)
+        self.set_keyword("DEWTEMP", "", "Dewar temperature", float)
+        self.set_keyword("TEMPUNIT", "C", "Temperature units", str)
+
+        return
+
     def set_control_temperature(self, temperature=None, temperature_id=0):
         """
         Set controller/detector control temperature.
