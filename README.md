@@ -14,6 +14,7 @@ The code below is for example only.
 
 ### Controller Setup
 ```python
+import azcam.server
 from azcam_arc.controller_arc import ControllerArc
 controller = ControllerArc()
 controller.timing_board = "arc22"
@@ -28,6 +29,7 @@ controller.video_speed = 1
 
 ### Exposure Setup
 ```python
+import azcam.server
 from azcam_arc.exposure_arc import ExposureArc
 exposure = ExposureArc()
 exposure.filetype = azcam.db.filetypes["MEF"]
@@ -40,21 +42,20 @@ exposure.set_remote_imageserver()
 
 ## Camera Servers
 *Camera servers* are separate executable programs which manage direct interaction with 
-controller hardware on some systems. Communication with a camera server takes place over sockets via 
-communication protocols defined between *azcam* and a specific CameraServer program. These 
+controller hardware on some systems. Communication with a camera server takes place over a socket via 
+communication protocols defined between *azcam* and a specific camera server program. These 
 camera servers are necessary when specialized drivers for the camera hardware are required.  They are 
 usually written in C/C++. 
 
 ## DSP Code
-The DSP code which runs in the ARC and Magellan controllers is assembled and linked with
-Motorola software tools. These tools should be installed in `../motoroladsptools/` on a
-Windows machine, as required by the batch files which assemble and link the DSP source code.
+The DSP code which runs in the ARC controllers is assembled and linked with
+Motorola software tools. These tools are typically installed in the folder `/azcam/motoroladsptools/` on a
+Windows machine as required by the batch files which assemble and link the code.
 
 While the AzCam application code for the ARC timing board is typically downloaded during
 camera initialization, the boot code must be compatible for this to work properly. Therefore
-Azcam DSP code must be burned into the timing board EEPROMs before use. The Azcam timing DSP code
-is quite different from the ARC code and is required for Azcam operation. The PCI fiber optic
-interface board and the utility board use the original ARC code and does not need to be changed.
-Note this applies to gen3 systems only, the gen1 and gen2 situation is more complex.
+AzCam-compatible DSP boot code may need to be burned into the timing board EEPROMs before use, depending on configuration. 
+
+The gen3 PCI fiber optic interface boards and the gen3 utility boards use the original ARC code and do not need to be changed. The gen1 and gen2 situations are more complex.
 
 For ARC system, the *xxx.lod* files are downlowded to the boards.

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="azcam-arc",
-    version="21.2.0",
+    version="21.2.1",
     description="azcam extension for ARC CCD controllers",
     long_description_content_type="text/markdown",
     long_description=long_description,

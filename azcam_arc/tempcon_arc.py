@@ -1,5 +1,5 @@
 """
-Contains the base TempConArc class.
+Contains the TempConArc class.
 """
 
 import math
