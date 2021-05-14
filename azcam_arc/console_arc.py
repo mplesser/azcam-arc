@@ -32,7 +32,9 @@ def start_idle(self):
     return
 
 
-def set_bias_number(self, board_number: int, dac_number: int, board_type: str, dac_value: int):
+def set_bias_number(
+    self, board_number: int, dac_number: int, board_type: str, dac_value: int
+):
     """
     Sets a bias value.
     Args:
@@ -48,7 +50,9 @@ def set_bias_number(self, board_number: int, dac_number: int, board_type: str, d
     return
 
 
-def write_controller_memory(self, mem_type: str, board_number: int, address: int, value: int):
+def write_controller_memory(
+    self, mem_type: str, board_number: int, address: int, value: int
+):
     """
     Write a word to a DSP memory location.
     Args:
